@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Simulator - PhishGuard</title>
+    <!-- Tailwind CSS without Dark Mode -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind Configuration without Dark Mode
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // Extend Tailwind's default theme here if needed
+                },
+            },
+            variants: {
+                extend: {},
+            },
+            plugins: [],
+        }
+    </script>
+    <!-- AOS Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+    <!-- Sticky Navigation -->
+    <nav class="sticky top-0 bg-white shadow-md z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo Section -->
+                <div class="flex items-center space-x-2">
+                    <!-- Logo SVG -->
+                    <a href="/" class="flex items-center">
+                        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+                        </svg>
+                        <span class="text-xl font-bold text-blue-600">PhishGuard</span>
+                    </a>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="/" class="hover:text-blue-600 transition">Home</a>
+                    <a href="/" class="hover:text-blue-600 transition">Threats</a>
+                    <a href="/" class="hover:text-blue-600 transition">Prevention</a>
+                    <a href="/" class="hover:text-blue-600 transition">Training</a>
+                    <a href="/resources" class="hover:text-blue-600 transition">Resources</a>
+                    <a href="{{ url_for('quiz') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Take Quiz</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600" aria-label="Toggle Mobile Menu">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg transition-colors duration-300">
+            <div class="px-4 pt-2 pb-3 space-y-1">
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Home</a>
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Threats</a>
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Prevention</a>
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Training</a>
+                <a href="/resources" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Resources</a>
+                <a href="{{ url_for('quiz') }}" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Take Quiz</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Phishing Simulator Section -->
+    <section id="simulator" class="py-20 bg-white flex-grow">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 section-title" data-aos="fade-up">Phishing Simulator</h2>
+            <!-- Progress Bar -->
+            <div class="mb-6">
+                <div class="w-full bg-gray-200 rounded-full h-4">
+                    <div id="progress-bar" class="bg-blue-600 h-4 rounded-full" style="width: 0%;"></div>
+                </div>
+                <p class="text-center mt-2" id="progress-text">0 / 3 Completed</p>
+            </div>
+            <div id="simulator-container" class="max-w-3xl mx-auto">
+                <!-- Scenario Card -->
+                <div id="scenario-card" class="bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold mb-2" id="scenario-title">Scenario Title</h3>
+                        <p class="text-gray-600" id="scenario-description">Scenario Description</p>
+                    </div>
+                    <div class="mb-4">
+                        <img id="scenario-image" src="" alt="Scenario Image" class="w-full h-48 object-cover rounded">
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-gray-700" id="scenario-email">[Simulated Email Content]</p>
+                    </div>
+                    <div class="flex flex-col space-y-4">
+                        <button data-choice="action" class="choice-button px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Take Action</button>
+                        <button data-choice="ignore" class="choice-button px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition">Ignore</button>
+                        <button data-choice="report" class="choice-button px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">Report</button>
+                    </div>
+                </div>
+
+                <!-- Feedback Card -->
+                <div id="feedback-card" class="bg-white p-6 rounded-lg shadow-lg hidden" data-aos="fade-up">
+                    <h3 class="text-xl font-semibold mb-2">Feedback</h3>
+                    <p class="text-gray-700" id="feedback-message">Your feedback message here.</p>
+                    <div class="mt-4">
+                        <button id="next-button" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Next Scenario</button>
+                    </div>
+                </div>
+
+                <!-- Completion Card -->
+                <div id="completion-card" class="bg-white p-6 rounded-lg shadow-lg hidden" data-aos="fade-up">
+                    <h3 class="text-2xl font-semibold mb-4">Simulation Complete</h3>
+                    <p class="text-gray-700 mb-4">You have completed the phishing simulator.</p>
+                    <p class="text-gray-700 mb-6">Your Score: <span id="final-score">0</span>/<span id="total-scenarios">0</span></p>
+                    <div>
+                        <button id="restart-button" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">Restart Simulator</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="hover:text-blue-400">Home</a></li>
+                        <li><a href="#about" class="hover:text-blue-400">About</a></li>
+                        <li><a href="#prevention" class="hover:text-blue-400">Prevention</a></li>
+                        <li><a href="#training" class="hover:text-blue-400">Training</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('guide') }}" class="hover:text-blue-400">Security Guide</a></li>
+                        <li><a href="{{ url_for('blog') }}" class="hover:text-blue-400">Security Blog</a></li>
+                        <li><a href="{{ url_for('tools') }}" class="hover:text-blue-400">Security Tools</a></li>
+                        <li><a href="{{ url_for('faq') }}" class="hover:text-blue-400">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2">
+                        <li>Email: <a href="mailto:support@phishguard.com" class="hover:text-blue-400">support@phishguard.com</a></li>
+                        <li>Phone: <a href="tel:+1234567890" class="hover:text-blue-400">+1 (234) 567-890</a></li>
+                        <li>Address: 123 PhishGuard Lane, Cyber City, TX 75001</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <!-- Social Icons -->
+                        <a href="#" class="hover:text-blue-400" aria-label="Facebook">
+                            <!-- Facebook SVG -->
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.325v21.351C0 23.403.597 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.466.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116C23.403 24 24 23.403 24 22.675V1.325C24 .597 23.403 0 22.675 0z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400" aria-label="Twitter">
+                            <!-- Twitter SVG -->
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400" aria-label="Instagram">
+                            <!-- Instagram SVG -->
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400" aria-label="LinkedIn">
+                            <!-- LinkedIn SVG -->
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.325v21.351C0 23.403.597 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.466.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116C23.403 24 24 23.403 24 22.675V1.325C24 .597 23.403 0 22.675 0z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+    </footer>
+
+    <!-- JavaScript for Phishing Simulator -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize AOS
+            AOS.init();
+
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Phishing Scenarios
+            const scenarios = [
+                {
+                    title: "Urgent: Verify Your Account Information",
+                    description: "You've received an email claiming to be from your bank, asking you to verify your account information.",
+                    image: "{{ url_for('static', filename='assets/bank_of_america.jpg') }}",
+                    email: `
+                        <strong>From:</strong> support@bankofamericasupport3j578wahg.com<br>
+                        <strong>Subject:</strong> Urgent: Verify Your Account Information<br><br>
+                        Dear Customer,<br><br>
+                        We have detected unusual activity in your account. Please verify your information by clicking the link below.<br><br>
+                        <a href="#">Verify Now</a><br><br>
+                        Regards,<br>Bank Of America
+                    `,
+                    correct: "report",
+                    feedback: {
+                        action: "This was a phishing attempt. Never click on suspicious links. Always verify with your bank directly.",
+                        ignore: "Ignoring may be safe, but it's better to report phishing attempts to protect others.",
+                        report: "Correct! Reporting helps in taking action against phishing attempts."
+                    }
+                },
+                {
+                    title: "Limited Time Offer: Claim Your Prize",
+                    description: "A message on social media congratulates you on winning a PS5 and asks for your personal details.",
+                    image: "{{ url_for('static', filename='assets/PS5.jpg') }}",
+                    email: `
+                        <strong>From:</strong> contest@4etag945wag89uj45wag89ujm345wag8ujm345wag789yuj.com<br>
+                        <strong>Subject:</strong> Congratulations! You've Won a PS5!<br><br>
+                        Hi there,<br><br>
+                        You have been selected to win a PS5! To claim your prize, please provide your personal details.<br><br>
+                        <a href="#">Claim Prize</a><br><br>
+                        Cheers,<br>Social Media Team
+                    `,
+                    correct: "ignore",
+                    feedback: {
+                        action: "Taking action on unsolicited messages can be risky. It's best to ignore such offers.",
+                        ignore: "Correct! Ignoring unsolicited messages helps prevent falling for scams.",
+                        report: "Reporting is also a good practice to help others stay safe."
+                    }
+                },
+                {
+                    title: "Password Reset Request",
+                    description: "You receive an email stating that your email account password has been reset.",
+                    image: "{{ url_for('static', filename='assets/Password.jpg') }}",
+                    email: `
+                        <strong>From:</strong> no-reply@wertag9ik,4rtag9uj4wetag89uj,4wtag89uj,45w.com<br>
+                        <strong>Subject:</strong> Password Reset Successful<br><br>
+                        Hello,<br><br>
+                        Your password has been successfully reset.<br><br>
+                        If you did not initiate this change, please contact support immediately.<br><br>
+                        Regards,<br>Your Email Service
+                    `,
+                    correct: "action",
+                    feedback: {
+                        action: "Taking immediate action is good. However, ensure you navigate to the official website directly rather than using email links.",
+                        ignore: "Ignoring might not be sufficient if the reset was unauthorized.",
+                        report: "Reporting unauthorized password resets helps secure your account."
+                    }
+                }
+            ];
+
+            let currentScenario = 0;
+            let score = 0;
+
+            const scenarioTitle = document.getElementById('scenario-title');
+            const scenarioDescription = document.getElementById('scenario-description');
+            const scenarioImage = document.getElementById('scenario-image');
+            const scenarioEmail = document.getElementById('scenario-email');
+            const scenarioCard = document.getElementById('scenario-card');
+            const feedbackCard = document.getElementById('feedback-card');
+            const feedbackMessage = document.getElementById('feedback-message');
+            const completionCard = document.getElementById('completion-card');
+            const finalScore = document.getElementById('final-score');
+            const totalScenarios = document.getElementById('total-scenarios');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const nextButton = document.getElementById('next-button');
+            const restartButton = document.getElementById('restart-button');
+
+            const choiceButtons = document.querySelectorAll('.choice-button');
+
+            // Preload Images for Better Performance
+            scenarios.forEach(scenario => {
+                const img = new Image();
+                img.src = scenario.image;
+            });
+
+            function loadScenario(index) {
+                if (index < scenarios.length) {
+                    const scenario = scenarios[index];
+                    scenarioTitle.innerHTML = scenario.title;
+                    scenarioDescription.innerHTML = scenario.description;
+                    scenarioImage.src = scenario.image;
+                    scenarioEmail.innerHTML = scenario.email;
+
+                    updateProgress();
+                } else {
+                    showCompletion();
+                }
+            }
+
+            function handleChoice(choice) {
+                const scenario = scenarios[currentScenario];
+                if (choice === scenario.correct) {
+                    score += 1;
+                }
+                feedbackMessage.innerHTML = scenario.feedback[choice];
+                scenarioCard.classList.add('hidden');
+                feedbackCard.classList.remove('hidden');
+                AOS.refresh(); // Refresh AOS for dynamic content
+            }
+
+            function nextScenario() {
+                feedbackCard.classList.add('hidden');
+                currentScenario += 1;
+                loadScenario(currentScenario);
+                scenarioCard.classList.remove('hidden');
+                AOS.refresh(); // Refresh AOS for dynamic content
+            }
+
+            function showCompletion() {
+                scenarioCard.classList.add('hidden');
+                feedbackCard.classList.add('hidden');
+                completionCard.classList.remove('hidden');
+                finalScore.textContent = score;
+                totalScenarios.textContent = scenarios.length;
+                updateProgress(true);
+                AOS.refresh(); // Refresh AOS for dynamic content
+            }
+
+            function restartSimulator() {
+                currentScenario = 0;
+                score = 0;
+                completionCard.classList.add('hidden');
+                loadScenario(currentScenario);
+                scenarioCard.classList.remove('hidden');
+                AOS.refresh(); // Refresh AOS for dynamic content
+            }
+
+            function updateProgress(isComplete = false) {
+                const completed = isComplete ? scenarios.length : currentScenario;
+                const total = scenarios.length;
+                const percentage = (completed / total) * 100;
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `${completed} / ${total} Completed`;
+            }
+
+            // Attach Event Listeners to Choice Buttons
+            choiceButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const choice = button.getAttribute('data-choice');
+                    handleChoice(choice);
+                });
+            });
+
+            // Event Listeners for Next and Restart Buttons
+            nextButton.addEventListener('click', nextScenario);
+            restartButton.addEventListener('click', restartSimulator);
+
+            // Initialize Simulator
+            loadScenario(currentScenario);
+        });
+    </script>
+</body>
+</html>

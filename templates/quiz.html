@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Awareness Quiz</title>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Configuration with Extended Theme -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#0A192F',
+                        'secondary': '#112240',
+                        'accent': '#64FFDA',
+                        'light-bg': '#FFFFFF',
+                        'light-text': '#0A192F',
+                        'button-bg': '#64FFDA',
+                        'button-hover-bg': '#52E1C3',
+                        'footer-bg': '#112240',
+                        'footer-text': '#8892B0',
+                    },
+                },
+            },
+            plugins: [],
+        }
+    </script>
+    <!-- AOS Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Fade-in Animation */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Slide-up Animation */
+        .slide-up {
+            animation: slideUp 0.5s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-light-bg text-light-text font-sans min-h-screen flex flex-col transition-colors duration-500">
+    <!-- Sticky Navigation -->
+    <nav class="sticky top-0 bg-white shadow-md z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo Section -->
+                <div class="flex items-center space-x-2">
+                    <!-- Logo SVG -->
+                    <a href="/" class="flex items-center">
+                        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+                        </svg>
+                        <span class="text-xl font-bold text-blue-600">PhishGuard</span>
+                    </a>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="/" class="hover:text-blue-600 transition">Home</a>
+                    <a href="/" class="hover:text-blue-600 transition">Threats</a>
+                    <a href="/" class="hover:text-blue-600 transition">Prevention</a>
+                    <a href="/" class="hover:text-blue-600 transition">Training</a>
+                    <a href="/resources" class="hover:text-blue-600 transition">Resources</a>
+                    <a href="{{ url_for('quiz') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Take Quiz</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg transition-colors duration-300">
+            <div class="px-4 pt-2 pb-3 space-y-1">
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Home</a>
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Threats</a>
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Prevention</a>
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Training</a>
+                <a href="/resources" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Resources</a>
+                <a href="{{ url_for('quiz') }}" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Take Quiz</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto flex-grow px-6 py-8">
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-300 rounded-full h-4 mb-6">
+            <div id="progressBar" class="bg-accent h-4 rounded-full" style="width: 0%;"></div>
+        </div>
+        <!-- Quiz Form -->
+        <form id="quizForm" class="space-y-6">
+            <!-- Question Template -->
+            <!-- Question 1 -->
+            <div class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <p class="font-semibold mb-4">1. This email asks for your password. Should you provide it?</p>
+                <label class="block mb-2">
+                    <input type="radio" name="q1" value="no" class="mr-2"> No
+                </label>
+                <label class="block">
+                    <input type="radio" name="q1" value="yes" class="mr-2"> Yes
+                </label>
+            </div>
+            <!-- Question 2 -->
+            <div class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <p class="font-semibold mb-4">2. The link in the email looks suspicious. Should you click it?</p>
+                <label class="block mb-2">
+                    <input type="radio" name="q2" value="no" class="mr-2"> No
+                </label>
+                <label class="block">
+                    <input type="radio" name="q2" value="yes" class="mr-2"> Yes
+                </label>
+            </div>
+            <!-- Question 3 -->
+            <div class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <p class="font-semibold mb-4">3. What term describes this type of attack?</p>
+                <label class="block mb-2">
+                    <input type="radio" name="q3" value="phishing" class="mr-2"> Phishing
+                </label>
+                <label class="block">
+                    <input type="radio" name="q3" value="malware" class="mr-2"> Malware
+                </label>
+            </div>
+            <!-- Question 4 -->
+            <div class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <p class="font-semibold mb-4">4. You receive an unexpected attachment in an email. What should you do?</p>
+                <label class="block mb-2">
+                    <input type="radio" name="q4" value="open_it" class="mr-2"> Open it to see the content
+                </label>
+                <label class="block">
+                    <input type="radio" name="q4" value="verify_sender" class="mr-2"> Verify the sender before opening
+                </label>
+            </div>
+            <!-- Question 5 -->
+            <div class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <p class="font-semibold mb-4">5. An email claims you've won a prize and asks for your credit card details to claim it. What should you do?</p>
+                <label class="block mb-2">
+                    <input type="radio" name="q5" value="provide_details" class="mr-2"> Provide the details to claim the prize
+                </label>
+                <label class="block">
+                    <input type="radio" name="q5" value="ignore_email" class="mr-2"> Ignore the email and delete it
+                </label>
+            </div>
+            <!-- Question 6 -->
+            <div class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <p class="font-semibold mb-4">6. What should you do if you suspect an email is a phishing attempt?</p>
+                <label class="block mb-2">
+                    <input type="radio" name="q6" value="reply" class="mr-2"> Reply to the email asking for more information
+                </label>
+                <label class="block">
+                    <input type="radio" name="q6" value="report" class="mr-2"> Report it to your IT department or use the report feature
+                </label>
+            </div>
+            <!-- Question 7 -->
+            <div class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <p class="font-semibold mb-4">7. What is a common sign of a phishing email?</p>
+                <label class="block mb-2">
+                    <input type="radio" name="q7" value="official_logo" class="mr-2"> Use of official logos and branding
+                </label>
+                <label class="block">
+                    <input type="radio" name="q7" value="urgent_language" class="mr-2"> Urgent language prompting immediate action
+                </label>
+            </div>
+            <!-- Question 8 -->
+            <div class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <p class="font-semibold mb-4">8. You receive an email from your bank asking you to verify your account information via a provided link. What should you do?</p>
+                <label class="block mb-2">
+                    <input type="radio" name="q8" value="click_link" class="mr-2"> Click the link and verify your information
+                </label>
+                <label class="block">
+                    <input type="radio" name="q8" value="contact_bank" class="mr-2"> Contact your bank directly using official channels
+                </label>
+            </div>
+            <!-- Question 9 -->
+            <div class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <p class="font-semibold mb-4">9. An email claims there's an issue with your recent order and asks you to update your payment information. What is the best course of action?</p>
+                <label class="block mb-2">
+                    <input type="radio" name="q9" value="update_info" class="mr-2"> Update your payment information as instructed
+                </label>
+                <label class="block">
+                    <input type="radio" name="q9" value="verify_issue" class="mr-2"> Verify the issue by contacting the company directly
+                </label>
+            </div>
+            <!-- Question 10 -->
+            <div class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                <p class="font-semibold mb-4">10. What should you do if you accidentally clicked on a suspicious link in an email?</p>
+                <label class="block mb-2">
+                    <input type="radio" name="q10" value="ignore" class="mr-2"> Ignore it and continue as usual
+                </label>
+                <label class="block">
+                    <input type="radio" name="q10" value="run_antivirus" class="mr-2"> Run an antivirus scan and inform your IT department
+                </label>
+            </div>
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="bg-accent text-primary px-6 py-3 rounded-full shadow-lg hover:bg-button-hover-bg transition-colors">Submit Quiz</button>
+            </div>
+        </form>
+        <!-- Result Section -->
+        <div id="result" class="mt-8 text-center hidden">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p id="scoreText" class="text-2xl font-bold"></p>
+                <p id="feedbackText" class="mt-4 text-footer-text"></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-footer-bg text-footer-text py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="hover:text-blue-400">Home</a></li>
+                        <li><a href="#about" class="hover:text-blue-400">About</a></li>
+                        <li><a href="#prevention" class="hover:text-blue-400">Prevention</a></li>
+                        <li><a href="#training" class="hover:text-blue-400">Training</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('guide') }}" class="hover:text-blue-400">Security Guide</a></li>
+                        <li><a href="{{ url_for('blog') }}" class="hover:text-blue-400">Security Blog</a></li>
+                        <li><a href="{{ url_for('tools') }}" class="hover:text-blue-400">Security Tools</a></li>
+                        <li><a href="{{ url_for('faq') }}" class="hover:text-blue-400">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2">
+                        <li>Email: <a href="mailto:support@phishguard.com" class="hover:text-blue-400">support@phishguard.com</a></li>
+                        <li>Phone: <a href="tel:+1234567890" class="hover:text-blue-400">+1 (234) 567-890</a></li>
+                        <li>Address: 123 PhishGuard Lane, Cyber City, TX 75001</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:text-blue-400">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.325v21.351C0 23.403.597 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.466.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116C23.403 24 24 23.403 24 22.675V1.325C24 .597 23.403 0 22.675 0z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                                <path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110-7.998 3.999 3.999 0 010 7.998z"/>
+                                <circle cx="18.406" cy="5.595" r="1.44"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Quiz Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize AOS
+            AOS.init();
+
+            const quizForm = document.getElementById('quizForm');
+            const resultDiv = document.getElementById('result');
+            const scoreText = document.getElementById('scoreText');
+            const feedbackText = document.getElementById('feedbackText');
+            const progressBar = document.getElementById('progressBar');
+            const totalQuestions = quizForm.querySelectorAll('div.bg-white').length;
+
+            // Correct Answers
+            const CORRECT_ANSWERS = {
+                'q1': 'no',
+                'q2': 'no',
+                'q3': 'phishing',
+                'q4': 'verify_sender',
+                'q5': 'ignore_email',
+                'q6': 'report',
+                'q7': 'urgent_language',
+                'q8': 'contact_bank',
+                'q9': 'verify_issue',
+                'q10': 'run_antivirus'
+            };
+
+            // Update Progress Bar
+            quizForm.addEventListener('change', () => {
+                const answered = quizForm.querySelectorAll('input[type="radio"]:checked').length;
+                const progress = (answered / totalQuestions) * 100;
+                progressBar.style.width = `${progress}%`;
+            });
+
+            // Handle Form Submission
+            quizForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(quizForm);
+                const answers = {};
+                formData.forEach((value, key) => {
+                    answers[key] = value;
+                });
+
+                // Calculate Score
+                let score = 0;
+                for (const [question, correctAnswer] of Object.entries(CORRECT_ANSWERS)) {
+                    if (answers[question] === correctAnswer) {
+                        score += 1;
+                    }
+                }
+
+                // Generate Feedback
+                let feedback = '';
+                const percentage = (score / totalQuestions) * 100;
+                if (score === totalQuestions) {
+                    feedback = "Excellent! You have a strong understanding of phishing threats.";
+                } else if (percentage >= 70) {
+                    feedback = "Good job! You have a good understanding, but there's room for improvement.";
+                } else if (percentage >= 40) {
+                    feedback = "Fair effort! Consider reviewing some phishing awareness materials.";
+                } else {
+                    feedback = "You might need to review phishing awareness materials to improve your understanding.";
+                }
+
+                // Display Results
+                scoreText.textContent = `Your Score: ${score} / ${totalQuestions}`;
+                feedbackText.textContent = feedback;
+                quizForm.classList.add('hidden');
+                resultDiv.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

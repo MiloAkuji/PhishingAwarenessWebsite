@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Awareness Training</title>
+    <!-- Tailwind CSS without Dark Mode -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind Configuration without Dark Mode
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // Extend Tailwind's default theme here if needed
+                },
+            },
+            variants: {
+                extend: {},
+            },
+            plugins: [],
+        }
+    </script>
+    <!-- AOS Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+    <!-- Sticky Navigation -->
+    <nav class="sticky top-0 bg-white shadow-md z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo Section -->
+                <div class="flex items-center space-x-2">
+                    <!-- Logo SVG -->
+                    <a href="/" class="flex items-center">
+                        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+                        </svg>
+                        <span class="text-xl font-bold text-blue-600">PhishGuard</span>
+                    </a>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="/" class="hover:text-blue-600 transition">Home</a>
+                    <a href="#threats" class="hover:text-blue-600 transition">Threats</a>
+                    <a href="#prevention" class="hover:text-blue-600 transition">Prevention</a>
+                    <a href="#training" class="hover:text-blue-600 transition">Training</a>
+                    <a href="/resources" class="hover:text-blue-600 transition">Resources</a>
+                    <a href="{{ url_for('quiz') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Take Quiz</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg transition-colors duration-300">
+            <div class="px-4 pt-2 pb-3 space-y-1">
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Home</a>
+                <a href="#threats" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Threats</a>
+                <a href="#prevention" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Prevention</a>
+                <a href="#training" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Training</a>
+                <a href="/resources" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Resources</a>
+                <a href="{{ url_for('quiz') }}" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Take Quiz</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative bg-gradient-to-br from-blue-600 to-blue-800 text-white py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6" data-aos="fade-up">Stay Safe from Phishing Attacks</h1>
+                <p class="text-xl mb-8 opacity-90" data-aos="fade-up" data-aos-delay="100">Learn to identify, prevent, and protect yourself against sophisticated phishing attempts.</p>
+                <div class="flex justify-center space-x-4" data-aos="fade-up" data-aos-delay="200">
+                    <a href="#threats" class="px-6 py-3 bg-white text-blue-600 rounded-md hover:bg-gray-100 transition">Learn More</a>
+                    <a href="{{ url_for('quiz') }}" class="px-6 py-3 bg-transparent border-2 border-white rounded-md hover:bg-white transition">Test Your Knowledge</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Threat Types Section -->
+    <section id="threats" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 section-title" data-aos="fade-up">Common Phishing Threats</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Email Phishing -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Email Phishing</h3>
+                    <p class="text-gray-600 mb-4">Fraudulent emails that appear to come from legitimate sources, attempting to steal sensitive information.</p>
+                    <ul class="mt-4 space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Spoofed sender addresses
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Urgent action required
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Suspicious attachments
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Spear Phishing -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.293 13.293A8 8 0 116.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Spear Phishing</h3>
+                    <p class="text-gray-600 mb-4">Targeted attacks using personal information to appear more convincing and legitimate.</p>
+                    <ul class="mt-4 space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Personalized content
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Company-specific details
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Social engineering
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Smishing -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2V5a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Smishing (SMS Phishing)</h3>
+                    <p class="text-gray-600 mb-4">Phishing attempts through text messages, often impersonating banks or delivery services.</p>
+                    <ul class="mt-4 space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Shortened URLs
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Package delivery scams
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Bank alert impersonation
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Prevention Steps Section -->
+    <section id="prevention" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 section-title" data-aos="fade-up">Key Prevention Steps</h2>
+            <div class="space-y-4">
+                <!-- Verify Sender -->
+                <div class="flex items-start p-4 bg-blue-50 rounded-lg hover:border-blue-400 transition-colors cursor-pointer group" data-aos="fade-up">
+                    <div class="flex-shrink-0 mr-4">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-1">Verify Sender Identity</h4>
+                        <p class="text-sm text-gray-600">Always double-check email addresses carefully, looking for slight misspellings or variations.</p>
+                    </div>
+                </div>
+
+                <!-- Check Links -->
+                <div class="flex items-start p-4 bg-green-50 rounded-lg hover:border-green-400 transition-colors cursor-pointer group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex-shrink-0 mr-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-1">Inspect Links Before Clicking</h4>
+                        <p class="text-sm text-gray-600">Hover over links to preview URLs and ensure they match the legitimate website.</p>
+                    </div>
+                </div>
+
+                <!-- Security Software -->
+                <div class="flex items-start p-4 bg-purple-50 rounded-lg hover:border-purple-400 transition-colors cursor-pointer group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex-shrink-0 mr-4">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-1">Use Security Software</h4>
+                        <p class="text-sm text-gray-600">Keep antivirus and anti-malware software updated and active on all devices.</p>
+                    </div>
+                </div>
+
+                <!-- Multi-Factor Authentication -->
+                <div class="flex items-start p-4 bg-yellow-50 rounded-lg hover:border-yellow-400 transition-colors cursor-pointer group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex-shrink-0 mr-4">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10h-3m0 4h-3m4 0h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-1">Enable Multi-Factor Authentication</h4>
+                        <p class="text-sm text-gray-600">Add an extra layer of security to all your important accounts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Common Warning Signs Section -->
+    <section id="warning-signs" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-left">
+                <h3 class="text-2xl font-semibold mb-6">Common Warning Signs</h3>
+                <div class="space-y-6">
+                    <!-- Urgency and Pressure -->
+                    <div class="relative p-6 border-2 border-red-200 rounded-lg hover:border-red-400 transition-colors cursor-pointer group">
+                        <h4 class="text-lg font-semibold text-red-600 mb-3">Urgency and Pressure</h4>
+                        <p class="text-gray-600 mb-2">Messages that create artificial time pressure or threats:</p>
+                        <ul class="list-disc ml-5 text-gray-600 space-y-1">
+                            <li>"Account will be deleted in 24 hours"</li>
+                            <li>"Immediate action required"</li>
+                            <li>"Security breach - act now"</li>
+                        </ul>
+                        <div class="absolute top-3 right-3 text-red-400 group-hover:text-red-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Unusual Requests -->
+                    <div class="relative p-6 border-2 border-yellow-200 rounded-lg hover:border-yellow-400 transition-colors cursor-pointer group" data-aos="fade-up" data-aos-delay="100">
+                        <h4 class="text-lg font-semibold text-yellow-600 mb-3">Unusual Requests</h4>
+                        <p class="text-gray-600 mb-2">Be wary of:</p>
+                        <ul class="list-disc ml-5 text-gray-600 space-y-1">
+                            <li>Requests for sensitive information</li>
+                            <li>Unexpected password reset emails</li>
+                            <li>Payment requests from unfamiliar sources</li>
+                        </ul>
+                        <div class="absolute top-3 right-3 text-yellow-400 group-hover:text-yellow-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Suspicious Attachments -->
+                    <div class="relative p-6 border-2 border-blue-200 rounded-lg hover:border-blue-400 transition-colors cursor-pointer group" data-aos="fade-up" data-aos-delay="200">
+                        <h4 class="text-lg font-semibold text-blue-600 mb-3">Suspicious Attachments</h4>
+                        <p class="text-gray-600 mb-2">Never open unexpected attachments, especially:</p>
+                        <ul class="list-disc ml-5 text-gray-600 space-y-1">
+                            <li>.exe files or compressed archives</li>
+                            <li>Documents requiring macro activation</li>
+                            <li>Multiple file extensions (file.doc.exe)</li>
+                        </ul>
+                        <div class="absolute top-3 right-3 text-blue-400 group-hover:text-blue-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10h-3m0 4h-3m4 0h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Training Section -->
+    <section id="training" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 section-title" data-aos="fade-up">Interactive Training</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Phishing Simulator -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg text-center" data-aos="fade-up">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Phishing Simulator</h3>
+                    <p class="text-gray-600 mb-6">Practice identifying phishing attempts with our interactive simulator.</p>
+                    <a href="{{ url_for('simulator') }}" class="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Try Simulator
+                    </a>
+                </div>
+                
+                <!-- Quiz Section -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Knowledge Check</h3>
+                    <p class="text-gray-600 mb-6">Test your phishing awareness with our interactive quiz.</p>
+                    <a href="{{ url_for('quiz') }}" class="inline-block px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                        Take Quiz
+                    </a>
+                </div>
+                
+                <!-- Video Tutorials -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10h-3m0 4h-3m4 0h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Video Tutorials</h3>
+                    <p class="text-gray-600 mb-6">Watch detailed explanations of common phishing techniques.</p>
+                    <a href="{{ url_for('videos') }}" class="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                        Watch Videos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 section-title" data-aos="fade-up">Additional Resources</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Security Guide -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up">
+                    <h3 class="text-xl font-semibold mb-4">Security Guide</h3>
+                    <p class="text-gray-600 mb-6">Comprehensive guides to help you understand and combat phishing threats.</p>
+                    <a href="{{ url_for('guide') }}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                        Read Guide
+                    </a>
+                </div>
+
+                <!-- Security Blog -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-xl font-semibold mb-4">Security Blog</h3>
+                    <p class="text-gray-600 mb-6">Stay updated with the latest trends and news in cybersecurity.</p>
+                    <a href="{{ url_for('blog') }}" class="inline-block px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                        Visit Blog
+                    </a>
+                </div>
+
+                <!-- Security Tools -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-xl font-semibold mb-4">Security Tools</h3>
+                    <p class="text-gray-600 mb-6">Access a variety of tools to enhance your security measures.</p>
+                    <a href="{{ url_for('tools') }}" class="inline-block px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
+                        Explore Tools
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="hover:text-blue-400">Home</a></li>
+                        <li><a href="#about" class="hover:text-blue-400">About</a></li>
+                        <li><a href="#prevention" class="hover:text-blue-400">Prevention</a></li>
+                        <li><a href="#training" class="hover:text-blue-400">Training</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('guide') }}" class="hover:text-blue-400">Security Guide</a></li>
+                        <li><a href="{{ url_for('blog') }}" class="hover:text-blue-400">Security Blog</a></li>
+                        <li><a href="{{ url_for('tools') }}" class="hover:text-blue-400">Security Tools</a></li>
+                        <li><a href="{{ url_for('faq') }}" class="hover:text-blue-400">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2">
+                        <li>Email: <a href="mailto:support@phishguard.com" class="hover:text-blue-400">support@phishguard.com</a></li>
+                        <li>Phone: <a href="tel:+1234567890" class="hover:text-blue-400">+1 (234) 567-890</a></li>
+                        <li>Address: 123 PhishGuard Lane, Cyber City, TX 75001</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:text-blue-400">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.325v21.351C0 23.403.597 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.466.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116C23.403 24 24 23.403 24 22.675V1.325C24 .597 23.403 0 22.675 0z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                                <path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110-7.998 3.999 3.999 0 010 7.998z"/>
+                                <circle cx="18.406" cy="5.595" r="1.44"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- JavaScript for Quiz Functionality -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Initialize AOS
+                AOS.init();
+
+                const quizForm = document.getElementById('quizForm');
+                const resultDiv = document.getElementById('result');
+                const scoreText = document.getElementById('scoreText');
+                const feedbackText = document.getElementById('feedbackText');
+                const progressBar = document.getElementById('progressBar');
+                const totalQuestions = quizForm.querySelectorAll('div.bg-white').length;
+
+                // Correct Answers
+                const CORRECT_ANSWERS = {
+                    'q1': 'no',
+                    'q2': 'no',
+                    'q3': 'phishing',
+                    'q4': 'verify_sender',
+                    'q5': 'ignore_email',
+                    'q6': 'report',
+                    'q7': 'urgent_language',
+                    'q8': 'contact_bank',
+                    'q9': 'verify_issue',
+                    'q10': 'run_antivirus'
+                };
+
+                // Update Progress Bar
+                quizForm.addEventListener('change', () => {
+                    const answered = quizForm.querySelectorAll('input[type="radio"]:checked').length;
+                    const progress = (answered / totalQuestions) * 100;
+                    progressBar.style.width = `${progress}%`;
+                });
+
+                // Handle Form Submission
+                quizForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(quizForm);
+                    const answers = {};
+                    formData.forEach((value, key) => {
+                        answers[key] = value;
+                    });
+
+                    // Calculate Score
+                    let score = 0;
+                    for (const [question, correctAnswer] of Object.entries(CORRECT_ANSWERS)) {
+                        if (answers[question] === correctAnswer) {
+                            score += 1;
+                        }
+                    }
+
+                    // Generate Feedback
+                    let feedback = '';
+                    const percentage = (score / totalQuestions) * 100;
+                    if (score === totalQuestions) {
+                        feedback = "Excellent! You have a strong understanding of phishing threats.";
+                    } else if (percentage >= 70) {
+                        feedback = "Good job! You have a good understanding, but there's room for improvement.";
+                    } else if (percentage >= 40) {
+                        feedback = "Fair effort! Consider reviewing some phishing awareness materials.";
+                    } else {
+                        feedback = "You might need to review phishing awareness materials to improve your understanding.";
+                    }
+
+                    // Display Results
+                    scoreText.textContent = `Your Score: ${score} / ${totalQuestions}`;
+                    feedbackText.textContent = feedback;
+                    quizForm.classList.add('hidden');
+                    resultDiv.classList.remove('hidden');
+                });
+            });
+        </script>
+</body>
+</html>

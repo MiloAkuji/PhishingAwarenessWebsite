@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Awareness Training - Resources</title>
+    <!-- Tailwind CSS without Dark Mode -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind Configuration without Dark Mode
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // Extend Tailwind's default theme here if needed
+                },
+            },
+            variants: {
+                extend: {},
+            },
+            plugins: [],
+        }
+    </script>
+    <!-- AOS Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css"> <!-- Ensure this path is correct -->
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+    <!-- Sticky Navigation -->
+    <nav class="sticky top-0 bg-white shadow-md z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo Section -->
+                <div class="flex items-center space-x-2">
+                    <!-- Logo SVG -->
+                    <a href="/" class="flex items-center">
+                        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+                        </svg>
+                        <span class="text-xl font-bold text-blue-600">PhishGuard</span>
+                    </a>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="/" class="hover:text-blue-600 transition">Home</a>
+                    <a href="/" class="hover:text-blue-600 transition">Threats</a>
+                    <a href="/" class="hover:text-blue-600 transition">Prevention</a>
+                    <a href="/" class="hover:text-blue-600 transition">Training</a>
+                    <a href="/" class="hover:text-blue-600 transition">Resources</a>
+                    <a href="{{ url_for('quiz') }}" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Take Quiz</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg transition-colors duration-300">
+            <div class="px-4 pt-2 pb-3 space-y-1">
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Home</a>
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Threats</a>
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Prevention</a>
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Training</a>
+                <a href="/resources" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Resources</a>
+                <a href="{{ url_for('quiz') }}" target="_blank" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Take Quiz</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Resources Section -->
+    <section id="resources" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 section-title" data-aos="fade-up">Additional Resources</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Phishing Awareness Guides -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up">
+                    <h3 class="text-xl font-semibold mb-4">Phishing Awareness Guides</h3>
+                    <p class="text-gray-600 mb-6">Comprehensive guides to help you identify and avoid phishing attempts effectively.</p>
+                    <a href="https://www.cisa.gov/publication/anti-phishing-guidelines" target="_blank" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                        CISA Anti-Phishing Guidelines
+                    </a>
+                    <a href="https://www.ftc.gov/tips-advice/business-center/guidance/how-recognize-and-avoid-phishing-scams" target="_blank" class="inline-block px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors mt-2">
+                        FTC Phishing Scams Guide
+                    </a>
+                </div>
+
+                <!-- Recommended Antivirus Software -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-xl font-semibold mb-4">Recommended Antivirus Software</h3>
+                    <p class="text-gray-600 mb-6">Protect your devices with reliable antivirus solutions.</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                        <li><a href="https://www.norton.com/" target="_blank" class="text-blue-600 hover:underline">Norton Antivirus</a></li>
+                        <li><a href="https://www.mcafee.com/" target="_blank" class="text-blue-600 hover:underline">McAfee Total Protection</a></li>
+                        <li><a href="https://www.bitdefender.com/" target="_blank" class="text-blue-600 hover:underline">Bitdefender Antivirus</a></li>
+                        <li><a href="https://www.kaspersky.com/" target="_blank" class="text-blue-600 hover:underline">Kaspersky Internet Security</a></li>
+                    </ul>
+                </div>
+
+                <!-- Educational Videos -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-xl font-semibold mb-4">Educational Videos</h3>
+                    <p class="text-gray-600 mb-6">Watch informative videos to understand phishing techniques and prevention strategies.</p>
+                    <!-- Embedded YouTube Video -->
+                    <div class="aspect-w-16 aspect-h-9 mb-4">
+                        <iframe class="rounded-lg" src="https://www.youtube.com/embed/6K89f4zxMYw" title="Understanding Phishing" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=6K89f4zxMYw" target="_blank" class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                        Watch More Videos
+                    </a>
+                </div>
+
+                <!-- Interactive Phishing Simulator -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="text-xl font-semibold mb-4">Interactive Phishing Simulator</h3>
+                    <p class="text-gray-600 mb-6">Test your ability to recognize phishing attempts with our interactive simulator.</p>
+                    <a href="https://www.simulatorexample.com/" target="_blank" class="inline-block px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors">
+                        Try Simulator
+                    </a>
+                </div>
+
+                <!-- Cybersecurity Blogs -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="400">
+                    <h3 class="text-xl font-semibold mb-4">Cybersecurity Blogs</h3>
+                    <p class="text-gray-600 mb-6">Stay updated with the latest trends, news, and insights in cybersecurity from industry experts.</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                        <li><a href="https://krebsonsecurity.com/" target="_blank" class="text-blue-600 hover:underline">Krebs on Security</a></li>
+                        <li><a href="https://www.schneier.com/" target="_blank" class="text-blue-600 hover:underline">Schneier on Security</a></li>
+                        <li><a href="https://www.darkreading.com/" target="_blank" class="text-blue-600 hover:underline">Dark Reading</a></li>
+                        <li><a href="https://www.cyber.gov.au/acsc/view-all-content/publications" target="_blank" class="text-blue-600 hover:underline">ACSC Publications</a></li>
+                    </ul>
+                </div>
+
+                <!-- Essential Security Tools -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="500">
+                    <h3 class="text-xl font-semibold mb-4">Essential Security Tools</h3>
+                    <p class="text-gray-600 mb-6">Utilize a range of tools to bolster your security measures and protect against phishing attacks.</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                        <li><a href="https://www.phishtank.com/" target="_blank" class="text-blue-600 hover:underline">PhishTank</a> - Community-based phishing threat tracking.</li>
+                        <li><a href="https://www.malwarebytes.com/" target="_blank" class="text-blue-600 hover:underline">Malwarebytes</a> - Malware and threat detection.</li>
+                        <li><a href="https://www.cloudflare.com/ssl/" target="_blank" class="text-blue-600 hover:underline">Cloudflare SSL</a> - Secure your websites with SSL certificates.</li>
+                        <li><a href="https://www.virustotal.com/" target="_blank" class="text-blue-600 hover:underline">VirusTotal</a> - Analyze files and URLs for viruses.</li>
+                    </ul>
+                </div>
+
+                <!-- Government and Official Resources -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="600">
+                    <h3 class="text-xl font-semibold mb-4">Government and Official Resources</h3>
+                    <p class="text-gray-600 mb-6">Leverage resources provided by government agencies to protect yourself and your organization.</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                        <li><a href="https://www.cyber.gov.au/" target="_blank" class="text-blue-600 hover:underline">Australian Cyber Security Centre (ACSC)</a></li>
+                        <li><a href="https://www.cisa.gov/" target="_blank" class="text-blue-600 hover:underline">Cybersecurity & Infrastructure Security Agency (CISA)</a></li>
+                        <li><a href="https://www.europol.europa.eu/crime-areas-and-trends/crime-areas/cybercrime" target="_blank" class="text-blue-600 hover:underline">Europol Cybercrime</a></li>
+                        <li><a href="https://www.ftc.gov/tips-advice/business-center/guidance/how-recognize-and-avoid-phishing-scams" target="_blank" class="text-blue-600 hover:underline">FTC Phishing Scams</a></li>
+                    </ul>
+                </div>
+
+                <!-- Interactive Tutorials -->
+                <div class="card bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="700">
+                    <h3 class="text-xl font-semibold mb-4">Interactive Tutorials</h3>
+                    <p class="text-gray-600 mb-6">Engage with interactive tutorials to enhance your phishing awareness and prevention skills.</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                        <li><a href="https://www.cybrary.it/course/phishing-awareness/" target="_blank" class="text-blue-600 hover:underline">Cybrary Phishing Awareness</a></li>
+                        <li><a href="https://www.sans.org/security-awareness-training/phishing/" target="_blank" class="text-blue-600 hover:underline">SANS Phishing Training</a></li>
+                        <li><a href="https://www.gophish.com/" target="_blank" class="text-blue-600 hover:underline">GoPhish Simulator</a> - Open-source phishing toolkit.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-12">
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                        <ul class="space-y-2">
+                            <li><a href="/" class="hover:text-blue-400">Home</a></li>
+                            <li><a href="#about" class="hover:text-blue-400">About</a></li>
+                            <li><a href="#prevention" class="hover:text-blue-400">Prevention</a></li>
+                            <li><a href="#training" class="hover:text-blue-400">Training</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <ul class="space-y-2">
+                            <li><a href="https://www.cisa.gov/publication/anti-phishing-guidelines" target="_blank" class="hover:text-blue-400">CISA Anti-Phishing Guidelines</a></li>
+                            <li><a href="https://krebsonsecurity.com/" target="_blank" class="hover:text-blue-400">Krebs on Security</a></li>
+                            <li><a href="https://www.phishtank.com/" target="_blank" class="hover:text-blue-400">PhishTank</a></li>
+                            <li><a href="https://www.cyber.gov.au/acsc/view-all-content/publications/anti-phishing-training-materials" target="_blank" class="hover:text-blue-400">ACSC Training Materials</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                        <ul class="space-y-2">
+                            <li>Email: <a href="mailto:support@phishguard.com" class="hover:text-blue-400">support@phishguard.com</a></li>
+                            <li>Phone: <a href="tel:+1234567890" class="hover:text-blue-400">+1 (234) 567-890</a></li>
+                            <li>Address: 123 PhishGuard Lane, Cyber City, TX 75001</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
+                        <div class="flex space-x-4">
+                            <a href="https://www.facebook.com/" target="_blank" class="hover:text-blue-400">
+                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                    <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.325v21.351C0 23.403.597 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.466.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116C23.403 24 24 23.403 24 22.675V1.325C24 .597 23.403 0 22.675 0z"/>
+                                </svg>
+                            </a>
+                            <a href="https://twitter.com/" target="_blank" class="hover:text-blue-400">
+                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                    <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                                    <path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110-7.998 3.999 3.999 0 010 7.998z"/>
+                                    <circle cx="18.406" cy="5.595" r="1.44"/>
+                                </svg>
+                            </a>
+                            <a href="https://www.linkedin.com/" target="_blank" class="hover:text-blue-400">
+                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                    <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.325v21.351C0 23.403.597 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.466.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116C23.403 24 24 23.403 24 22.675V1.325C24 .597 23.403 0 22.675 0z"/>
+                                </svg>
+                            </a>
+                            <a href="https://www.instagram.com/" target="_blank" class="hover:text-blue-400">
+                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                    <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                                    <path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110-7.998 3.999 3.999 0 010 7.998z"/>
+                                    <circle cx="18.406" cy="5.595" r="1.44"/>
+                                </svg>
+                            </a>
+                            <a href="https://www.youtube.com/" target="_blank" class="hover:text-blue-400">
+                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                    <path d="M19.615 3.184C21.406 4.978 22 7.209 22 12s-.594 7.022-2.385 8.816C19.028 21.406 16.797 22 12 22s-7.028-.594-8.816-2.385C2.594 19.022 2 16.791 2 12s.594-7.022 2.385-8.816C4.972 2.594 7.203 2 12 2s7.028.594 8.615 1.184zM9.545 15.568V8.432l6.363 3.568-6.363 3.568z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- JavaScript for AOS Initialization -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Initialize AOS
+                AOS.init();
+            });
+        </script>
+</body>
+</html>

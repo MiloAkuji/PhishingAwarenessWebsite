@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Awareness Videos - PhishGuard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind Configuration without Dark Mode
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // Extend Tailwind's default theme here if needed
+                },
+            },
+            variants: {
+                extend: {},
+            },
+            plugins: [],
+        }
+    </script>
+    <!-- AOS Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+    <!-- Sticky Navigation -->
+    <nav class="sticky top-0 bg-white shadow-md z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo Section -->
+                <div class="flex items-center space-x-2">
+                    <!-- Logo SVG -->
+                    <a href="/" class="flex items-center">
+                        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+                        </svg>
+                        <span class="text-xl font-bold text-blue-600">PhishGuard</span>
+                    </a>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="/" class="hover:text-blue-600 transition">Home</a>
+                    <a href="#threats" class="hover:text-blue-600 transition">Threats</a>
+                    <a href="#prevention" class="hover:text-blue-600 transition">Prevention</a>
+                    <a href="#training" class="hover:text-blue-600 transition">Training</a>
+                    <a href="/resources" class="hover:text-blue-600 transition">Resources</a>
+                    <a href="/videos" class="hover:text-blue-600 transition">Videos</a>
+                    <a href="{{ url_for('quiz') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Take Quiz</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg transition-colors duration-300">
+            <div class="px-4 pt-2 pb-3 space-y-1">
+                <a href="/" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Home</a>
+                <a href="#threats" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Threats</a>
+                <a href="#prevention" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Prevention</a>
+                <a href="#training" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Training</a>
+                <a href="/resources" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Resources</a>
+                <a href="/videos" class="block px-3 py-2 hover:bg-blue-50 rounded-md">Videos</a>
+                <a href="{{ url_for('quiz') }}" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Take Quiz</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Videos Section -->
+    <section id="videos" class="py-20 bg-gray-100 flex-grow">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 section-title" data-aos="fade-up">Educational Videos</h2>
+
+            <!-- Search Bar -->
+            <div class="mb-8 flex justify-center" data-aos="fade-up" data-aos-delay="100">
+                <input type="text" id="searchInput" placeholder="Search videos..." class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600">
+            </div>
+
+            <!-- Categories and Reset Filter Button -->
+            <div class="mb-8 flex flex-wrap justify-center space-x-4 space-y-2 sm:space-y-0" data-aos="fade-up" data-aos-delay="200">
+                <button class="filter-btn px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition" data-category="all">All</button>
+                <button class="filter-btn px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition" data-category="basics">Basics</button>
+                <button class="filter-btn px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition" data-category="advanced">Advanced</button>
+                <button class="filter-btn px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition" data-category="case-studies">Case Studies</button>
+                <!-- Reset Filter Button -->
+                <button id="resetFilter" class="reset-btn px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">Reset Filters</button>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="videosGrid">
+                <!-- Video Card 1 -->
+                <div class="video-card bg-white p-6 rounded-lg shadow-lg" data-category="basics">
+                    <div class="mb-4">
+                        <iframe class="w-full h-48 rounded" src="https://www.youtube.com/embed/XBkzBrXlle0" title="Phishing Explained" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Understanding Phishing Attacks</h3>
+                    <p class="text-gray-600">Learn the fundamentals of phishing attacks, how they work, and the common techniques used by cybercriminals.</p>
+                </div>
+
+                <!-- Video Card 2 -->
+                <div class="video-card bg-white p-6 rounded-lg shadow-lg" data-category="basics">
+                    <div class="mb-4">
+                        <iframe class="w-full h-48 rounded" src="https://www.youtube.com/embed/o0btqyGWIQw" title="Spotting Fake Emails" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Spotting Fake Emails</h3>
+                    <p class="text-gray-600">Identify the signs of a phishing email and learn best practices to verify the authenticity of suspicious messages.</p>
+                </div>
+
+                <!-- Video Card 3 -->
+                <div class="video-card bg-white p-6 rounded-lg shadow-lg" data-category="advanced">
+                    <div class="mb-4">
+                        <iframe class="w-full h-48 rounded" src="https://www.youtube.com/embed/sdpxddDzXfE" title="Protecting Your Personal Information" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Protecting Your Personal Information</h3>
+                    <p class="text-gray-600">Understand the importance of safeguarding your personal data and the steps you can take to enhance your online security.</p>
+                </div>
+
+                <!-- Video Card 4 -->
+                <div class="video-card bg-white p-6 rounded-lg shadow-lg" data-category="case-studies">
+                    <div class="mb-4">
+                        <iframe class="w-full h-48 rounded" src="https://www.youtube.com/embed/lc7scxvKQOo" title="Real-World Phishing Case Studies" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Real-World Phishing Case Studies</h3>
+                    <p class="text-gray-600">Analyze real-world phishing incidents to understand the tactics used and how they were mitigated.</p>
+                </div>
+
+                <!-- Video Card 5 -->
+                <div class="video-card bg-white p-6 rounded-lg shadow-lg" data-category="advanced">
+                    <div class="mb-4">
+                        <iframe class="w-full h-48 rounded" src="https://www.youtube.com/embed/u9dBGWVwMMA" title="Advanced Phishing Techniques" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Advanced Phishing Techniques</h3>
+                    <p class="text-gray-600">Dive deeper into sophisticated phishing strategies and learn how to defend against them effectively.</p>
+                </div>
+
+                <!-- Video Card 6 -->
+                <div class="video-card bg-white p-6 rounded-lg shadow-lg" data-category="basics">
+                    <div class="mb-4">
+                        <iframe class="w-full h-48 rounded" src="https://www.youtube.com/embed/h_WZk-_TWh0" title="Creating Strong Passwords" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Creating Strong Passwords</h3>
+                    <p class="text-gray-600">Learn how to create and manage strong passwords to protect your accounts from unauthorized access.</p>
+                </div>
+
+                <!-- Add more video cards as needed -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="hover:text-blue-400">Home</a></li>
+                        <li><a href="#about" class="hover:text-blue-400">About</a></li>
+                        <li><a href="#prevention" class="hover:text-blue-400">Prevention</a></li>
+                        <li><a href="#training" class="hover:text-blue-400">Training</a></li>
+                        <li><a href="/videos" class="hover:text-blue-400">Videos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('guide') }}" class="hover:text-blue-400">Security Guide</a></li>
+                        <li><a href="{{ url_for('blog') }}" class="hover:text-blue-400">Security Blog</a></li>
+                        <li><a href="{{ url_for('tools') }}" class="hover:text-blue-400">Security Tools</a></li>
+                        <li><a href="{{ url_for('faq') }}" class="hover:text-blue-400">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2">
+                        <li>Email: <a href="mailto:support@phishguard.com" class="hover:text-blue-400">support@phishguard.com</a></li>
+                        <li>Phone: <a href="tel:+1234567890" class="hover:text-blue-400">+1 (234) 567-890</a></li>
+                        <li>Address: 123 PhishGuard Lane, Cyber City, TX 75001</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <!-- Social Icons -->
+                        <a href="#" class="hover:text-blue-400">
+                            <!-- Facebook SVG -->
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.325v21.351C0 23.403.597 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.466.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116C23.403 24 24 23.403 24 22.675V1.325C24 .597 23.403 0 22.675 0z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400">
+                            <!-- Twitter SVG -->
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400">
+                            <!-- Instagram SVG -->
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 17.07 3.633 16.7 3.633 16.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.417-1.305.76-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.596-.015 2.88-.015 3.276 0 .315.21.69.825.57C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-blue-400">
+                            <!-- LinkedIn SVG -->
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.325v21.351C0 23.403.597 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.466.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116C23.403 24 24 23.403 24 22.675V1.325C24 .597 23.403 0 22.675 0z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+        </footer>
+
+        <!-- JavaScript for Videos Page -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Initialize AOS
+                AOS.init();
+
+                // Search Functionality
+                const searchInput = document.getElementById('searchInput');
+                const videosGrid = document.getElementById('videosGrid');
+                const videoCards = document.querySelectorAll('.video-card');
+
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.toLowerCase();
+                    videoCards.forEach(card => {
+                        const title = card.querySelector('h3').textContent.toLowerCase();
+                        const description = card.querySelector('p').textContent.toLowerCase();
+                        if (title.includes(query) || description.includes(query)) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+
+                // Filter Functionality
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                const resetFilterButton = document.getElementById('resetFilter');
+
+                // Define default classes for each category
+                const categoryClasses = {
+                    'all': ['bg-blue-600', 'hover:bg-blue-700'],
+                    'basics': ['bg-gray-600', 'hover:bg-gray-700'],
+                    'advanced': ['bg-green-600', 'hover:bg-green-700'],
+                    'case-studies': ['bg-purple-600', 'hover:bg-purple-700'],
+                };
+
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remove active state from all filter buttons
+                        filterButtons.forEach(btn => {
+                            btn.classList.remove('bg-blue-600', 'bg-gray-600', 'bg-green-600', 'bg-purple-600');
+                            btn.classList.remove('hover:bg-blue-700', 'hover:bg-gray-700', 'hover:bg-green-700', 'hover:bg-purple-700');
+                        });
+
+                        // Add active state to the clicked button
+                        const category = button.getAttribute('data-category');
+                        if (categoryClasses[category]) {
+                            categoryClasses[category].forEach(cls => button.classList.add(cls));
+                        }
+
+                        // Filter videos
+                        videoCards.forEach(card => {
+                            if (category === 'all' || card.getAttribute('data-category') === category) {
+                                card.classList.remove('hidden');
+                            } else {
+                                card.classList.add('hidden');
+                            }
+                        });
+                    });
+                });
+
+                // Reset Filter Functionality
+                resetFilterButton.addEventListener('click', () => {
+                    // Reset all filter buttons to their default state
+                    filterButtons.forEach(btn => {
+                        // Remove existing filter classes
+                        btn.classList.remove('bg-blue-600', 'bg-gray-600', 'bg-green-600', 'bg-purple-600');
+                        btn.classList.remove('hover:bg-blue-700', 'hover:bg-gray-700', 'hover:bg-green-700', 'hover:bg-purple-700');
+
+                        // Reapply default classes based on category
+                        const category = btn.getAttribute('data-category');
+                        if (categoryClasses[category]) {
+                            categoryClasses[category].forEach(cls => btn.classList.add(cls));
+                        }
+                    });
+
+                    // Show all video cards
+                    videoCards.forEach(card => card.classList.remove('hidden'));
+
+                    // Clear search input
+                    searchInput.value = '';
+                });
+            });
+        </script>
+    </body>
+</html>
